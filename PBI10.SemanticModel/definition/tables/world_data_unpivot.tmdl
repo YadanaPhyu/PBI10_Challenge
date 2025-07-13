@@ -1,0 +1,77 @@
+table world_data_unpivot
+	lineageTag: 429f0d77-bc8f-4cce-b3d6-7b1a6c18ab80
+
+	column Entity
+		dataType: string
+		lineageTag: a2beb485-516d-42c9-9528-71d6a290a972
+		summarizeBy: none
+		sourceColumn: Entity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		lineageTag: f52683af-cedd-4416-a73a-9f27f5ec4970
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a13f9b5-db25-4123-9d35-fcf91c1fbd27
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 5b722f69-82b0-44ec-ba24-8d9dc1af1583
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: 72e314af-dbcc-4fe2-8d9b-5593ca8def77
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EntityType
+		dataType: string
+		lineageTag: 10166b96-e193-4e4d-ae87-b4bcace30473
+		summarizeBy: none
+		sourceColumn: EntityType
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region = LOOKUPVALUE('country-code-mapping'[region], 'country-code-mapping'[alpha-3], world_data_unpivot[Code])
+		lineageTag: 1534fa8d-908d-4103-a34d-6b97439e76c8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition world_data_unpivot = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({population_code, population_no_code, population_no_code_region}),
+				    #"Filtered Rows1" = Table.SelectRows(Source, each [Year] >= 2010 and [Year] <= 2021),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Filtered Rows1",{{"Population (historical)", "Population"}}),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Renamed Columns1", {"Entity", "Code", "Year"}, "Attribute", "Value"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Unpivoted Columns",{{"Attribute", "Category"}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Renamed Columns", "EntityType", each if Text.Contains([Entity], "income") then "Income" else if [Entity] = "world" then "world" else if [Entity] = "Asia" then "Region" else if [Entity] = "Africa" then "Region" else if [Entity] = "Oceania" then "Region" else if [Entity] = "North America" then "Region" else if [Entity] = "South America" then "Region" else if [Entity] = "Europe" then "Region" else "Country")
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

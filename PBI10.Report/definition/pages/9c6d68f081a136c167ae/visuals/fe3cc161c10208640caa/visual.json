@@ -1,0 +1,78 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.7.0/schema.json",
+  "name": "fe3cc161c10208640caa",
+  "position": {
+    "x": 22.5,
+    "y": 87.5,
+    "z": 21000,
+    "height": 50,
+    "width": 1218.75,
+    "tabOrder": 20000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "The past decade marked a "
+                  },
+                  {
+                    "value": "mobile and internet revolution",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": ", with over "
+                  },
+                  {
+                    "value": "63% of the world now online",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": ", and "
+                  },
+                  {
+                    "value": "mobile phones reaching more people than ever before,",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " highlighting a fundamental shift in how the world connects. "
+                  },
+                  {
+                    "value": "Regional Note",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": ": Internet penetration and mobile usage expanded in "
+                  },
+                  {
+                    "value": "all continents",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": ", with mobile phones surpassing landlines globally by a wide margin."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,107 @@
+table country-code-mapping
+	lineageTag: 8dc85fe9-44a2-44dc-8942-68cd41366e46
+
+	column name
+		dataType: string
+		lineageTag: 3681a490-28d5-4185-aa2a-0c16f35fb46b
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column alpha-2
+		dataType: string
+		lineageTag: 0fcb85a8-7c8d-4331-ba5b-dda9956eef1d
+		summarizeBy: none
+		sourceColumn: alpha-2
+
+		annotation SummarizationSetBy = Automatic
+
+	column alpha-3
+		dataType: string
+		lineageTag: ffb120dd-1f52-466a-94eb-fac5c3cee608
+		summarizeBy: none
+		sourceColumn: alpha-3
+
+		annotation SummarizationSetBy = Automatic
+
+	column country-code
+		dataType: int64
+		formatString: 0
+		lineageTag: 57530e02-b00c-4a69-b6e4-647faf7183cd
+		summarizeBy: sum
+		sourceColumn: country-code
+
+		annotation SummarizationSetBy = Automatic
+
+	column iso_3166-2
+		dataType: string
+		lineageTag: 336b324b-13ac-4e09-8d10-a57d15b51dd6
+		summarizeBy: none
+		sourceColumn: iso_3166-2
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: 2e592a71-8463-42d2-a9e5-b1edf68bfd95
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column sub-region
+		dataType: string
+		lineageTag: b0e74bb0-bd72-4724-8496-a626c71b7425
+		summarizeBy: none
+		sourceColumn: sub-region
+
+		annotation SummarizationSetBy = Automatic
+
+	column intermediate-region
+		dataType: string
+		lineageTag: 6bf3718c-f707-4802-a2aa-4da7f2ca81a0
+		summarizeBy: none
+		sourceColumn: intermediate-region
+
+		annotation SummarizationSetBy = Automatic
+
+	column region-code
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e2a5606-9f46-4928-b8e1-668ed81bba41
+		summarizeBy: sum
+		sourceColumn: region-code
+
+		annotation SummarizationSetBy = Automatic
+
+	column sub-region-code
+		dataType: int64
+		formatString: 0
+		lineageTag: c9639c65-feba-4c35-8a72-5af7e68cd983
+		summarizeBy: sum
+		sourceColumn: sub-region-code
+
+		annotation SummarizationSetBy = Automatic
+
+	column intermediate-region-code
+		dataType: int64
+		formatString: 0
+		lineageTag: f43055e4-c6ad-46dd-8c9a-9128eca7aece
+		summarizeBy: sum
+		sourceColumn: intermediate-region-code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition country-code-mapping = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Nimbyx\OneDrive - Nimbyx Ltd\PBI10\country-code-mapping.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"name", type text}, {"alpha-2", type text}, {"alpha-3", type text}, {"country-code", Int64.Type}, {"iso_3166-2", type text}, {"region", type text}, {"sub-region", type text}, {"intermediate-region", type text}, {"region-code", Int64.Type}, {"sub-region-code", Int64.Type}, {"intermediate-region-code", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

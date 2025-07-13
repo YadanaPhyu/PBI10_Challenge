@@ -1,0 +1,206 @@
+table MeasureTable_WithNoCode
+	lineageTag: 065acecf-8066-4121-aa72-498dcbc1b19a
+
+	measure no_code_internet_users = ```
+			
+			    CALCULATE(SUM(population_no_code[internet_users]))
+			```
+		formatString: #,0
+		lineageTag: f125aa30-d4df-448e-a699-a5a17bf04b20
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure no_code_population = CALCULATE(SUM(population_no_code[Population (historical)]))
+		formatString: #,0
+		lineageTag: 66339d95-07af-46c5-a57b-73c831967295
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure no_code_internet_penetration = DIVIDE([no_code_internet_users], [no_code_population], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e8c4b5d5-f814-4a62-a51b-6d2750f351f4
+
+	measure no_code_population_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR CurrentPopulation = 
+			    CALCULATE(
+			        [no_code_population],
+			        FILTER(
+			            ALL(population_no_code),
+			            population_no_code[Year] = CurrentYear
+			            && population_no_code[Entity] = MAX(population_no_code[Entity])
+			        )
+			    )
+			VAR PrevPopulation =
+			    CALCULATE(
+			        [no_code_population],
+			        FILTER(
+			            ALL(population_no_code),
+			            population_no_code[Year] = CurrentYear - 1
+			            && population_no_code[Entity] = MAX(population_no_code[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevPopulation),
+			    DIVIDE(CurrentPopulation - PrevPopulation, PrevPopulation),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: dd7441d1-99bc-4cab-a488-0e96fe6643c8
+
+	measure no_code_population_YearColor =
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR MinY = CALCULATE(MIN(population_no_code[Year]), ALL(population_no_code))
+			VAR MaxY = CALCULATE(MAX(population_no_code[Year]), ALL(population_no_code))
+			RETURN
+			SWITCH(TRUE(),
+			    CurrentYear = MinY, "Blue",
+			    CurrentYear = MaxY, "Blue",
+			    "White"
+			)
+		lineageTag: e01ce544-5314-4638-b4ad-ee348feb04b3
+
+	measure no_code_population_YearColor_for_pct_change =
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR MinY = CALCULATE(MIN(population_no_code[Year])+1, ALL(population_no_code))
+			VAR MaxY = CALCULATE(MAX(population_no_code[Year]), ALL(population_no_code))
+			RETURN
+			SWITCH(TRUE(),
+			    CurrentYear = MinY, "Blue",
+			    CurrentYear = MaxY, "Blue",
+			    "White"
+			)
+		lineageTag: a44ad6e1-2ba8-4dd6-babd-6b594df75161
+
+	measure no_code_mobile_users = ```
+			
+			    CALCULATE(SUM(population_no_code[mobile_cellular_users]))
+			```
+		lineageTag: 84cdb3be-b3f5-4af6-b70a-1dec3440beab
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure no_code_fixed_telephone_users = ```
+			
+			    CALCULATE(SUM(population_no_code[fixed_telephone_users]))
+			```
+		lineageTag: f5c5f102-4e94-4dc7-aed5-5360e051f557
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure no_code_internet_users_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR Current_ = 
+			    CALCULATE(
+			        [no_code_internet_users],
+			        FILTER(
+			            ALL(population_no_code),
+			            population_no_code[Year] = CurrentYear
+			            && population_no_code[Entity] = MAX(population_no_code[Entity])
+			        )
+			    )
+			VAR Previous_ =
+			    CALCULATE(
+			        [no_code_internet_users],
+			        FILTER(
+			            ALL(population_no_code),
+			            population_no_code[Year] = CurrentYear - 1
+			            && population_no_code[Entity] = MAX(population_no_code[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(Previous_),
+			    DIVIDE(Current_ - Previous_, Previous_),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: fe93908b-b6b9-400b-a57e-debd822f0524
+
+	measure no_code_mobile_users_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR Current_ = 
+			    CALCULATE(
+			        [no_code_mobile_users],
+			        FILTER(
+			            ALL(population_no_code),
+			            population_no_code[Year] = CurrentYear
+			            && population_no_code[Entity] = MAX(population_no_code[Entity])
+			        )
+			    )
+			VAR Previous_ =
+			    CALCULATE(
+			        [no_code_mobile_users],
+			        FILTER(
+			            ALL(population_no_code),
+			            population_no_code[Year] = CurrentYear - 1
+			            && population_no_code[Entity] = MAX(population_no_code[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(Previous_),
+			    DIVIDE(Current_ - Previous_, Previous_),
+			    BLANK()
+			)
+			```
+		lineageTag: 67c52fcf-29c3-4f01-8260-df4789f7d827
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure no_code_fixedtelephone_users_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR Current_ = 
+			    CALCULATE(
+			        [no_code_fixed_telephone_users],
+			        FILTER(
+			            ALL(population_no_code),
+			            population_no_code[Year] = CurrentYear
+			            && population_no_code[Entity] = MAX(population_no_code[Entity])
+			        )
+			    )
+			VAR Previous_ =
+			    CALCULATE(
+			        [no_code_fixed_telephone_users],
+			        FILTER(
+			            ALL(population_no_code),
+			            population_no_code[Year] = CurrentYear - 1
+			            && population_no_code[Entity] = MAX(population_no_code[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(Previous_),
+			    DIVIDE(Current_ - Previous_, Previous_),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f2ba5b14-9dc3-4f28-a8e3-f62af238da12
+
+	column Column
+		formatString: 0
+		lineageTag: a0ee076e-9bf3-4d7a-9e75-9f356f9fdb46
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition MeasureTable_WithNoCode = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 9d79a6baf3c04436bfb8a2351ec952f3
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

@@ -1,0 +1,47 @@
+table number-of-internet-users_no_code
+	lineageTag: fef4e830-3df7-4bac-a81d-101e2c787d3b
+
+	column Entity
+		dataType: string
+		lineageTag: 54f4174e-56bc-4cd9-9126-510b43ac3064
+		summarizeBy: none
+		sourceColumn: Entity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: b8b86c71-812b-4b83-960e-39cc592157c7
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Number of Internet users'
+		dataType: double
+		lineageTag: 389cbaa2-08b3-499b-a97c-cc5c6e6d824e
+		summarizeBy: none
+		sourceColumn: Number of Internet users
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition number-of-internet-users_no_code = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Nimbyx\OneDrive - Nimbyx Ltd\PBI10\number-of-internet-users.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Number of Internet users", type number}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Code] = "")),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Year] >= 2010 and [Year] < 2022),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows1",{"Entity", "Year", "Number of Internet users"})
+				in
+				    #"Removed Other Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

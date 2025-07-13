@@ -1,0 +1,90 @@
+table population_code
+	lineageTag: 63ed3bdb-dc8a-4b5a-b5ea-8acc82010228
+
+	column Entity
+		dataType: string
+		lineageTag: 9419e8db-1eaf-483e-baf3-a9c76736a2f1
+		summarizeBy: none
+		sourceColumn: Entity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		lineageTag: 8e2704de-ba74-4d39-a84f-b77408654c19
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 94b447cc-c83e-4ad9-9d3a-26be72ea1cfe
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Population (historical)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 18867cfe-692a-46ad-927d-81fda3817e91
+		summarizeBy: sum
+		sourceColumn: Population (historical)
+
+		annotation SummarizationSetBy = Automatic
+
+	column fixed_telephone_users
+		dataType: double
+		lineageTag: 3abd146e-1562-45b0-922e-a8901305daf8
+		summarizeBy: sum
+		sourceColumn: fixed_telephone_users
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mobile_cellular_users
+		dataType: double
+		lineageTag: 7f0e6d5e-7ab3-4ec1-822b-8392bd238e08
+		summarizeBy: sum
+		sourceColumn: mobile_cellular_users
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column internet_users
+		dataType: double
+		lineageTag: 4a19d9c7-4ca8-45b3-bfd2-db35319ce8bf
+		summarizeBy: sum
+		sourceColumn: internet_users
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition population_code = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Nimbyx\OneDrive - Nimbyx Ltd\PBI10\population.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Population (historical)", Int64.Type}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Code] <> "")),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Year] >= 2010 and [Year] < 2022),
+				    #"Merged Queries" = Table.NestedJoin(#"Filtered Rows1", {"Entity", "Code", "Year"}, #"fixed-telephone-subscriptions_code", {"Entity", "Code", "Year"}, "fixed-telephone-subscriptions_code", JoinKind.LeftOuter),
+				    #"Expanded fixed-telephone-subscriptions_code" = Table.ExpandTableColumn(#"Merged Queries", "fixed-telephone-subscriptions_code", {"Fixed telephone subscriptions (per 100 people)"}, {"fixed-telephone-subscriptions_code.Fixed telephone subscriptions (per 100 people"}),
+				    #"Merged Queries1" = Table.NestedJoin(#"Expanded fixed-telephone-subscriptions_code", {"Entity", "Code", "Year"}, #"mobile-cellular-subscriptions_code", {"Entity", "Code", "Year"}, "mobile-cellular-subscriptions_code", JoinKind.LeftOuter),
+				    #"Expanded mobile-cellular-subscriptions_code" = Table.ExpandTableColumn(#"Merged Queries1", "mobile-cellular-subscriptions_code", {"Mobile cellular subscriptions (per 100 people)"}, {"mobile-cellular-subscriptions_code.Mobile cellular subscriptions (per 100 people"}),
+				    #"Merged Queries2" = Table.NestedJoin(#"Expanded mobile-cellular-subscriptions_code", {"Entity", "Code", "Year"}, #"number-of-internet-users_code", {"Entity", "Code", "Year"}, "number-of-internet-users_code", JoinKind.LeftOuter),
+				    #"Expanded number-of-internet-users_code" = Table.ExpandTableColumn(#"Merged Queries2", "number-of-internet-users_code", {"Number of Internet users"}, {"number-of-internet-users_code.Number of Internet users"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded number-of-internet-users_code",{{"fixed-telephone-subscriptions_code.Fixed telephone subscriptions (per 100 people", "fixed_telephone_users"}, {"mobile-cellular-subscriptions_code.Mobile cellular subscriptions (per 100 people", "mobile_cellular_users"}, {"number-of-internet-users_code.Number of Internet users", "internet_users"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

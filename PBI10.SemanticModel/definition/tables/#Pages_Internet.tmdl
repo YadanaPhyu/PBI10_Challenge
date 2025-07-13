@@ -1,0 +1,26 @@
+table #Pages_Internet
+	lineageTag: ca719484-9376-4c1f-a53f-49d0fd299f3f
+
+	measure '#Pages_Internet Value' = SELECTEDVALUE('#Pages_Internet'[#Pages_Internet])
+		formatString: 0
+		lineageTag: d5fa5bb7-2fa0-4405-bb74-fc3c50984a35
+
+	column #Pages_Internet
+		formatString: 0
+		lineageTag: e80ac8c9-47c1-4c1b-b729-0fe693bb11c7
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition #Pages_Internet = calculated
+		mode: import
+		source = GENERATESERIES(1, 15, 1)
+
+	annotation PBI_Id = 1c3d2c782ced45f89b80d3282754270e
+

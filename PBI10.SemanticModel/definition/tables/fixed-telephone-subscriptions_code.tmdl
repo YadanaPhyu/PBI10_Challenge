@@ -1,0 +1,54 @@
+table fixed-telephone-subscriptions_code
+	lineageTag: a0da310d-50a7-4120-9534-f3eaddeda30c
+
+	column Entity
+		dataType: string
+		lineageTag: e36e3b33-858b-4167-8b46-d59c9bca9888
+		summarizeBy: none
+		sourceColumn: Entity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		lineageTag: d45a482d-d6c9-44a9-9a91-c3ceaed285a6
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: fcf852e1-daff-4872-94f4-1c5fdf3e24bb
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fixed telephone subscriptions (per 100 people)'
+		dataType: double
+		lineageTag: 0c106afd-8282-4940-9599-e898e138f37e
+		summarizeBy: sum
+		sourceColumn: Fixed telephone subscriptions (per 100 people)
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fixed-telephone-subscriptions_code = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Nimbyx\OneDrive - Nimbyx Ltd\PBI10\fixed-telephone-subscriptions-per-100-people.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Fixed telephone subscriptions (per 100 people)", type number}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Code] <> "")),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Year] >= 2010 and [Year] < 2022)
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

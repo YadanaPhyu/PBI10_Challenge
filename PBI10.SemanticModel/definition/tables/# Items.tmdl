@@ -1,0 +1,26 @@
+table '# Items'
+	lineageTag: bc9c0f7d-60ab-4fe9-bb3a-efe5e63521dd
+
+	measure '# Items Value' = SELECTEDVALUE('# Items'[# Items])
+		formatString: 0
+		lineageTag: d3b87e70-f37a-4f37-bcb2-e42408418d08
+
+	column '# Items'
+		formatString: 0
+		lineageTag: 4c074612-4b6c-48d9-b1b6-da5cc926e121
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition '# Items' = calculated
+		mode: import
+		source = GENERATESERIES(1, 20, 1)
+
+	annotation PBI_Id = 51a352ec3ba44082b6a87d7e0b7b2378
+

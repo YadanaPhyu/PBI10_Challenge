@@ -1,0 +1,192 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.7.0/schema.json",
+  "name": "4cb629160a2d6715869a",
+  "position": {
+    "x": 322,
+    "y": 2256,
+    "z": 23000,
+    "height": 216,
+    "width": 958,
+    "tabOrder": 22000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Internet Users",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " more than doubled, reaching "
+                  },
+                  {
+                    "value": "5.02 billion",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " by 2021. The "
+                  },
+                  {
+                    "value": "global internet penetration rate",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " rose from "
+                  },
+                  {
+                    "value": "28.0%",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " to "
+                  },
+                  {
+                    "value": "63.1%",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": ", showing major strides in digital access worldwide."
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " Mobile Adoption",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " surged:"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Mobile users per 100 people",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " grew from "
+                  },
+                  {
+                    "value": "84",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " in 2010 to "
+                  },
+                  {
+                    "value": "107",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " in 2021."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Fixed telephone users",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " declined from "
+                  },
+                  {
+                    "value": "17.8",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " to "
+                  },
+                  {
+                    "value": "11.3",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " per 100 people, confirming a global shift toward mobile-first communication."
+                  }
+                ],
+                "listType": "bullet",
+                "indent": 1
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Regional Note",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": ": Internet penetration and mobile usage expanded in "
+                  },
+                  {
+                    "value": "all continents",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": ", with mobile phones surpassing landlines globally by a wide margin."
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "“All Top 10 countries now have over 90% internet access — a significant shift from just a decade ago.”",
+                    "textStyle": {
+                      "fontStyle": "italic"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

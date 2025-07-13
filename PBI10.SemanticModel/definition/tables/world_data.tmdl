@@ -1,0 +1,80 @@
+table world_data
+	lineageTag: 807ac704-580b-450e-95f5-0480b72d7eac
+
+	column Entity
+		dataType: string
+		lineageTag: 4f86d964-c818-4b63-91a7-10a5329f922d
+		summarizeBy: none
+		sourceColumn: Entity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		lineageTag: e4f3e2d1-6760-4e8a-8917-d22574632471
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 16d19044-d211-43b7-ad67-5ecf8600f35d
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Population (historical)'
+		dataType: int64
+		formatString: 0
+		lineageTag: db73f4cd-4ea3-45ea-a02c-e6cf18999370
+		summarizeBy: sum
+		sourceColumn: Population (historical)
+
+		annotation SummarizationSetBy = Automatic
+
+	column fixed_telephone_users
+		dataType: double
+		lineageTag: d3615607-e768-48ca-a85f-d56c8b01bb35
+		summarizeBy: sum
+		sourceColumn: fixed_telephone_users
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mobile_cellular_users
+		dataType: double
+		lineageTag: d31d78d6-3757-4ca0-8657-00ca1c9e4e3a
+		summarizeBy: sum
+		sourceColumn: mobile_cellular_users
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column internet_users
+		dataType: double
+		lineageTag: d2f5ee01-27c9-46d3-afed-94aa79f6fab5
+		summarizeBy: sum
+		sourceColumn: internet_users
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition world_data = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({population_code, population_no_code, population_no_code_region}),
+				    #"Filtered Rows1" = Table.SelectRows(Source, each [Year] >= 2010 and [Year] <= 2021)
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

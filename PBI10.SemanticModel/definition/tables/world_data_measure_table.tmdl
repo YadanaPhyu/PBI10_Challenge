@@ -1,0 +1,435 @@
+table world_data_measure_table
+	lineageTag: 87e20b54-138d-4057-9d0e-d41c9daf38c7
+
+	measure population = ```
+			
+			CALCULATE(
+			        SUM(world_data_unpivot[Value]),
+			        FILTER(world_data_unpivot, 
+			                world_data_unpivot[Category] = "Population"
+			            )
+			    )
+			```
+		lineageTag: cd020e99-2394-47ba-a3e2-fac7dfe7300f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure internet = ```
+			
+			CALCULATE(
+			        SUM(world_data_unpivot[Value]),
+			        FILTER(world_data_unpivot, 
+			                world_data_unpivot[Category] = "internet_users"
+			            )
+			    )
+			```
+		formatString: #,0.00
+		lineageTag: c2b1fbd0-1375-4cab-926c-07d81cbd50e6
+
+	measure internet_penetration = DIVIDE([internet], [population],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 18710b93-acbf-40f3-86c5-85fd364eabaa
+
+	measure fixed_telephone = ```
+			
+			CALCULATE(
+			        SUM(world_data_unpivot[Value]),
+			        FILTER(world_data_unpivot, 
+			                world_data_unpivot[Category] = "fixed_telephone_users"
+			            )
+			    )
+			```
+		formatString: #,0
+		lineageTag: 05f04538-ecc0-473f-817e-da9a013686cc
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure mobile_cellular = ```
+			
+			CALCULATE(
+			        SUM(world_data_unpivot[Value]),
+			        FILTER(world_data_unpivot, 
+			                world_data_unpivot[Category] = "mobile_cellular_users"
+			            )
+			    )
+			```
+		formatString: #,0
+		lineageTag: dad0698f-289d-486a-ba30-4aafceb906d5
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure YearColor =
+			
+			VAR CurrentYear = SELECTEDVALUE(world_data_unpivot[Year])
+			VAR MinY = CALCULATE(MIN(world_data_unpivot[Year]), ALL(world_data_unpivot))
+			VAR MaxY = CALCULATE(MAX(world_data_unpivot[Year]), ALL(world_data_unpivot))
+			RETURN
+			SWITCH(TRUE(),
+			    CurrentYear = MinY, "Blue",
+			    CurrentYear = MaxY, "Blue",
+			    "White"
+			)
+		lineageTag: c775b975-fd5f-4ad1-b52c-0596588377b1
+
+	measure 'Page Filter' = ```
+			
+			VAR total_items = 
+			CALCULATE(
+			    DISTINCTCOUNT(world_data_unpivot[Entity]),
+			    ALL(world_data_unpivot[Entity])
+			)
+			VAR show_number_items = [# Items Value]
+			VAR _number_of_pages = 
+			ROUNDUP(
+			    DIVIDE(
+			        total_items,
+			        show_number_items
+			    ),
+			    0
+			)
+			VAR _page_filter = 
+			IF(
+			    SELECTEDVALUE('#Pages'[#Pages]) <= _number_of_pages,
+			    1,
+			    0
+			)
+			RETURN _page_filter
+			```
+		formatString: 0
+		lineageTag: 9dcbe8f3-1023-44f1-991b-58f74c5dc126
+
+	measure dummy = 2000000000
+		formatString: 0
+		lineageTag: 9fc81d48-e25e-4558-ba7b-042226d1bec0
+
+	measure 'Total Population CY' = ```
+			
+			VAR CurrentYear = CALCULATE(MAX(world_data_unpivot[Year]), ALL(world_data_unpivot[Year]))
+			VAR CY = 
+			    CALCULATE(
+			        [population],
+			        world_data_unpivot[Year] = CurrentYear
+			    )
+			RETURN
+			    CY
+			```
+		lineageTag: 8db0d2fc-be0d-4885-84df-145751d4312f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Population PY' = ```
+			
+			VAR PrevYear = CALCULATE(MAX(world_data_unpivot[Year]) , ALL(world_data_unpivot[Year]) ) - 10
+			VAR PY = 
+			    CALCULATE(
+			        [population],
+			        world_data_unpivot[Year] = PrevYear
+			    )
+			RETURN
+			    PY
+			```
+		formatString: #,0.00
+		lineageTag: f3763213-f3d5-4572-90d4-7de45c5e4389
+
+	measure dummy2 = ```
+			
+			VAR MaxValueExcludingWorld = 
+			    CALCULATE(
+			        MAXX(ALL(world_data_unpivot[Entity]), [Total Population CY]),
+			        FILTER(ALL(world_data_unpivot), 
+			        NOT world_data_unpivot[Entity] IN {"World", "India", "China", "Indonesia", "United States", "Parkistan"}
+			        &&
+			        world_data_unpivot[Year] = 2021
+			        )
+			    )
+			RETURN
+			((MaxValueExcludingWorld/2) - [Total Population CY])
+			
+			//dummy2 = (MAXX(ALL(world_data_unpivot[Entity]), [Total Population CY]) - [Total Population CY]) + 10
+			```
+		lineageTag: 3a882d04-3904-4076-815f-36912196629a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'item filter' = ```
+			
+			VAR _Page = '#Pages'[#Pages Value]
+			VAR _Number_of_items = [# Items Value]
+			VAR _ItemRank = [item rank]
+			VAR _ItemsFilterTbl = 
+			    FILTER(
+			        ALLSELECTED(world_data_unpivot[Entity]),
+			        _ItemRank > (_Page - 1) * _Number_of_items
+			        &&
+			        _ItemRank <= (_Page) * _Number_of_items
+			    )
+			VAR _ItemsShow = 
+			IF
+			(
+			    SELECTEDVALUE(world_data_unpivot[Entity]) IN _ItemsFilterTbl,
+			    1,
+			    0
+			)
+			RETURN _ItemsShow
+			```
+		formatString: 0
+		lineageTag: 273c2e60-79b5-45cf-95fa-32016485b368
+
+	measure 'item rank' =
+			
+			RANKX(
+			        ALL(world_data_unpivot[Entity]),
+			        [population]
+			    )
+		formatString: 0
+		lineageTag: 65240ff2-52cb-4d38-88f0-a963a69e0e66
+
+	measure 'ranking development label' = ```
+			
+			VAR _ItemRankChange = [Item Rank CY] - [Item Rank PY]
+			VAR _ExtraSpace = REPT("‏‏‎ ‎", 5)
+			VAR _Indicator =
+			        SWITCH(
+			            TRUE,
+			            _ItemRankChange = 0, "#" & [Item Rank CY] & _ExtraSpace & "—",
+			            _ItemRankChange > 0, "#" & [Item Rank CY] & _ExtraSpace & "▼" &  _ItemRankChange,
+			            _ItemRankChange < 0, "#" & [Item Rank CY] & _ExtraSpace & "▲" &  ABS( _ItemRankChange )            
+			        )
+			VAR _Label = _Indicator
+			RETURN
+			    _Label
+			```
+		lineageTag: bc767b46-d5b4-4a3d-ab2c-f0d58899e455
+
+	measure 'Item Rank CY' = ```
+			
+			    RANKX(
+			        ALL(world_data_unpivot[Entity]), // NOT ALLSELECTED
+			        [Total Population CY]
+			    )
+			```
+		formatString: 0
+		lineageTag: d430cc1b-7aa9-4c3e-b07c-b9d89067329e
+
+	measure 'Item Rank PY' = ```
+			
+			    RANKX(
+			        ALL(world_data_unpivot[Entity]), // NOT ALLSELECTED
+			        [Total Population PY]
+			    )
+			```
+		formatString: 0
+		lineageTag: c1b4496e-7c77-4547-8279-12f3b174a731
+
+	measure 'Ranking Development Color' = ```
+			
+			VAR _ItemRankChange = [Item Rank CY] - [Item Rank PY]
+			VAR _Color =
+			    SWITCH(
+			        TRUE,
+			        _ItemRankChange = 0, "grey",
+			        _ItemRankChange > 0, "red",
+			        _ItemRankChange < 0, "green"           
+			    )
+			RETURN
+			    _Color
+			```
+		lineageTag: f4c0671a-a487-42ea-a1fe-f78bcdd6c157
+
+	measure 'item filter internet' = ```
+			
+			VAR _Page = '#Pages_Internet'[#Pages_Internet Value]
+			VAR _Number_of_items = '#Items_Internet'[#Items_Internet Value]
+			VAR _ItemRank = [item rank internet]
+			VAR _ItemsFilterTbl = 
+			    FILTER(
+			        ALLSELECTED(world_data_unpivot[Entity]),
+			        _ItemRank > (_Page - 1) * _Number_of_items
+			        &&
+			        _ItemRank <= (_Page) * _Number_of_items
+			    )
+			VAR _ItemsShow = 
+			IF
+			(
+			    SELECTEDVALUE(world_data_unpivot[Entity]) IN _ItemsFilterTbl,
+			    1,
+			    0
+			)
+			RETURN _ItemsShow
+			```
+		formatString: 0
+		lineageTag: 892df248-3205-4149-8389-226d6596a8d3
+
+	measure 'item rank internet' =
+			
+			RANKX(
+			        ALL(world_data_unpivot[Entity]),
+			        [internet_penetration]
+			    )
+		formatString: 0
+		lineageTag: 3d01e82a-7be0-4161-b4a9-9ce553323b9d
+
+	measure 'Total Population CY Internet' = ```
+			
+			VAR CurrentYear = CALCULATE(MAX(world_data_unpivot[Year]), ALL(world_data_unpivot[Year]))
+			VAR CY = 
+			    CALCULATE(
+			        [internet_penetration],
+			        world_data_unpivot[Year] = CurrentYear
+			    )
+			RETURN
+			    CY
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a7579a19-aef6-463e-8822-1e4998d4022b
+
+	measure 'Total Population PY Internet' = ```
+			
+			VAR PrevYear = CALCULATE(MAX(world_data_unpivot[Year]) , ALL(world_data_unpivot[Year]) ) - 10
+			VAR PY = 
+			    CALCULATE(
+			        [internet_penetration],
+			        world_data_unpivot[Year] = PrevYear
+			    )
+			RETURN
+			    PY
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 6841a5d3-a06b-4cd8-bb17-1f4c1c4dcb6e
+
+	measure 'dummy 2 internet' = ```
+			1.2 - [Total Population CY Internet] 
+			/*
+			VAR MaxValueExcludingWorld = 
+			    CALCULATE(
+			        MAXX(ALL(world_data_unpivot[Entity]), [Total Population CY Internet]),
+			        FILTER(ALL(world_data_unpivot), 
+			        NOT world_data_unpivot[Entity] IN {"World", "India", "China", "Indonesia", "United States", "Parkistan"}
+			        &&
+			        world_data_unpivot[Year] = 2021
+			        )
+			    )
+			RETURN
+			((MaxValueExcludingWorld/2) - [Total Population CY Internet])
+			*/
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 8e989622-267f-4025-a7b4-06c967e4f966
+
+	measure 'dummy internet' = 0.80
+		formatString: 0%;-0%;0%
+		lineageTag: 5236236d-f55a-41ff-be41-f27b78ca6e99
+
+	measure 'Page Filter Internet' = ```
+			
+			VAR total_items = 
+			CALCULATE(
+			    DISTINCTCOUNT(world_data_unpivot[Entity]),
+			    ALL(world_data_unpivot[Entity])
+			)
+			VAR show_number_items = '#Items_Internet'[#Items_Internet Value]
+			VAR _number_of_pages = 
+			ROUNDUP(
+			    DIVIDE(
+			        total_items,
+			        show_number_items
+			    ),
+			    0
+			)
+			VAR _page_filter = 
+			IF(
+			    SELECTEDVALUE('#Pages_Internet'[#Pages_Internet]) <= _number_of_pages,
+			    1,
+			    0
+			)
+			RETURN _page_filter
+			```
+		formatString: 0
+		lineageTag: ab73e6fa-6041-447e-a760-c2bda05cfdb0
+
+	measure 'Item Rank CY Internet' = ```
+			
+			    RANKX(
+			        ALL(world_data_unpivot[Entity]), // NOT ALLSELECTED
+			        [Total Population CY Internet]
+			    )
+			```
+		formatString: 0
+		lineageTag: b5f59694-aed0-4c91-a1fe-a80e0dcae621
+
+	measure 'Item Rank PY Internet' = ```
+			
+			    RANKX(
+			        ALL(world_data_unpivot[Entity]), // NOT ALLSELECTED
+			        [Total Population PY Internet]
+			    )
+			```
+		formatString: 0
+		lineageTag: 1b09b267-a588-46e8-827c-152b652f53de
+
+	measure 'ranking development label internet' = ```
+			
+			VAR _ItemRankChange = [Item Rank CY Internet] - [Item Rank PY Internet]
+			VAR _ExtraSpace = REPT("‏‏‎ ‎", 5)
+			VAR _Indicator =
+			        SWITCH(
+			            TRUE,
+			            _ItemRankChange = 0, "#" & [Item Rank CY Internet] & _ExtraSpace & "—",
+			            _ItemRankChange > 0, "#" & [Item Rank CY Internet] & _ExtraSpace & "▼" &  _ItemRankChange,
+			            _ItemRankChange < 0, "#" & [Item Rank CY Internet] & _ExtraSpace & "▲" &  ABS( _ItemRankChange )            
+			        )
+			VAR _Label = _Indicator
+			RETURN
+			    _Label
+			```
+		lineageTag: ab6665f8-0417-4204-a43c-9a7a6531e230
+
+	measure 'Ranking Development Color Internet' = ```
+			
+			VAR _ItemRankChange = [Item Rank CY Internet] - [Item Rank PY Internet]
+			VAR _Color =
+			    SWITCH(
+			        TRUE,
+			        _ItemRankChange = 0, "grey",
+			        _ItemRankChange > 0, "red",
+			        _ItemRankChange < 0, "green"           
+			    )
+			RETURN
+			    _Color
+			```
+		lineageTag: 37036804-0ae7-4660-8de2-6b306b6cf53e
+
+	measure 'item rank Internet PY' = "#" & [Item Rank PY Internet] & ": " & FORMAT([Total Population PY Internet], "%")
+		lineageTag: 603d4f72-03a4-4e4e-ba98-2b483ea40846
+
+	measure 'item rank PY Internet label' = ```
+			
+			"#" & [Item Rank PY Internet] & ": " & 
+			FORMAT([Total Population PY Internet], "0.00%")
+			```
+		lineageTag: ced890c1-cf1c-470f-90af-8cec0b6f09b9
+
+	measure 'item rank CY Internet label' = ```
+			
+			"#" & [Item Rank CY Internet] & ": " & 
+			FORMAT([Total Population CY Internet], "0.00%")
+			```
+		lineageTag: 8746ff63-37f8-40d1-a3e8-79d4d36b323b
+
+	column Column
+		formatString: 0
+		lineageTag: 01f1c966-9a24-48ed-99aa-1952676e2675
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition world_data_measure_table = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 0ea17d5b07314c029044e10c674530fc
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

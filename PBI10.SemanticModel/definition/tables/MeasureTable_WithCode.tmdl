@@ -1,0 +1,302 @@
+table MeasureTable_WithCode
+	lineageTag: 31d37d08-3c3b-43cc-b172-ed15a34fe7a7
+
+	measure code_internet_penetration = DIVIDE([code_internet_users], [code_population], 0)
+		lineageTag: aa41ba86-2c16-4956-bd13-76065299a424
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_population = SUM(population_code[Population (historical)])
+		formatString: #,0.00
+		lineageTag: 363f1987-3d47-45fd-8f09-5ba91d5af58c
+
+	measure code_internet_users = SUM(population_code[internet_users])
+		lineageTag: 34647f89-b6ba-4ee8-8545-4e08cbfe1bb6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_internet_users_inMinYear = ```
+			
+			CALCULATE(SUM(population_code[internet_users]), 
+			FILTER(population_code, 
+			    population_code[Year] = MIN(population_code[Year])
+			))
+			```
+		lineageTag: 81fcf368-6e55-4829-9d07-7dfe1a68a292
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_internet_users_inMaxYear = ```
+			
+			CALCULATE(SUM(population_code[internet_users]), 
+			FILTER(population_code, 
+			    population_code[Year] = MAX(population_code[Year])
+			))
+			```
+		lineageTag: 5841da21-8fd3-4454-88e9-32d89293ae35
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_fixed_telephones_users = SUM(population_code[fixed_telephone_users])
+		lineageTag: 8cfd7440-c41c-4fd9-8d3c-e63f3c11d40a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_mobile_cellular_users = SUM(population_code[mobile_cellular_users])
+		lineageTag: 29f7d602-4fc3-4c1c-b2cc-abb7b2b706d9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_population_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(population_code[Year])
+			VAR CurrentPopulation = 
+			    CALCULATE(
+			        [code_population],
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = CurrentYear
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			VAR PrevPopulation =
+			    CALCULATE(
+			        [code_population],
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = CurrentYear - 1
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevPopulation),
+			    DIVIDE(CurrentPopulation - PrevPopulation, PrevPopulation),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b2aef943-69ae-461a-badc-3dde7eb7c340
+
+	measure '// Annual Growth Rate (Corrected)Annual Growth Rate %' = ```
+			
+			VAR CurrentYearPopulation = CALCULATE(
+			        SUM(population_code[Population (historical)]),
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = MAX(population_code[Year])
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			VAR PreviousYearPopulation = 
+			    CALCULATE(
+			        SUM(population_code[Population (historical)]),
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = MAX(population_code[Year]) - 1
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			RETURN
+			DIVIDE(
+			    CurrentYearPopulation - PreviousYearPopulation,
+			    PreviousYearPopulation,
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 299a6b79-e761-4a10-910e-8d98bce82957
+
+	measure '// Create measure to show only first/last labelsSmart Label' =
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR FirstYear = MIN(population_no_code[Year])
+			VAR LastYear = MAX(population_no_code[Year])
+			RETURN
+			IF(
+			    OR(CurrentYear = FirstYear, CurrentYear = LastYear),
+			    [code_population_growth_pct],
+			    BLANK()
+			)
+		lineageTag: 425c7300-08ba-4511-b950-d5204b8b9a10
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_population_Min_Max_Pct_growth =
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR FirstYear = MIN(population_no_code[Year])
+			VAR LastYear = MAX(population_no_code[Year])
+			RETURN
+			IF(
+			    OR(CurrentYear = FirstYear, CurrentYear = LastYear),
+			    [code_population_growth_pct],
+			    BLANK()
+			)
+		lineageTag: 6c79a31b-852b-46ed-9d9c-75fad536027a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_population_Min_Max =
+			
+			VAR CurrentYear = SELECTEDVALUE(population_no_code[Year])
+			VAR FirstYear = MIN(population_no_code[Year])
+			VAR LastYear = MAX(population_no_code[Year])
+			RETURN
+			IF(
+			    OR(CurrentYear = FirstYear, CurrentYear = LastYear),
+			    [code_population],
+			    BLANK()
+			)
+		formatString: #,0
+		lineageTag: 83a16fb0-7138-446b-ba8b-3c09247b3874
+
+	measure MinYear = CALCULATE(MIN(population_code[Year]), ALL(population_code))
+		formatString: 0
+		lineageTag: 90ec2492-30e8-4080-aab9-9b5918af5160
+
+	measure MaxYear = CALCULATE(MAX(population_code[Year]), ALL(population_code))
+		formatString: 0
+		lineageTag: 2eaf686a-10b5-4d3d-83b9-9f8ae85fb7ab
+
+	measure code_population_YearColor =
+			
+			VAR CurrentYear = SELECTEDVALUE(population_code[Year])
+			VAR MinY = CALCULATE(MIN(population_code[Year]), ALL(population_code))
+			VAR MaxY = CALCULATE(MAX(population_code[Year]), ALL(population_code))
+			RETURN
+			SWITCH(TRUE(),
+			    CurrentYear = MinY, "Blue",
+			    CurrentYear = MaxY, "Blue",
+			    "White"
+			)
+		lineageTag: cea64a68-3b4d-4df7-ba01-2f533b9b206e
+
+	measure code_population_YearColor_for_pct_change =
+			
+			VAR CurrentYear = SELECTEDVALUE(population_code[Year])
+			VAR MinY = CALCULATE(MIN(population_code[Year])+1, ALL(population_code))
+			VAR MaxY = CALCULATE(MAX(population_code[Year]), ALL(population_code))
+			RETURN
+			SWITCH(TRUE(),
+			    CurrentYear = MinY, "Blue",
+			    CurrentYear = MaxY, "Blue",
+			    "White"
+			)
+		lineageTag: b97b909c-564e-4db5-b874-3f4eea69b572
+
+	measure code_internet_users_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(population_code[Year])
+			VAR CurrentInternetUsers = 
+			    CALCULATE(
+			        [code_internet_users],
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = CurrentYear
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			VAR PrevInternetUsers =
+			    CALCULATE(
+			        [code_internet_users],
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = CurrentYear - 1
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevInternetUsers),
+			    DIVIDE(CurrentInternetUsers - PrevInternetUsers, PrevInternetUsers),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 0decbf07-79f8-47a5-afe1-f03b402f7ad7
+
+	measure code_mobile_users = SUM(population_code[mobile_cellular_users])
+		lineageTag: 6b973c1a-8be2-459a-bba2-a0299c62d7f4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure code_fixed_telephones_users_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(population_code[Year])
+			VAR CurrentFixedTelephoneUsers = 
+			    CALCULATE(
+			        [code_fixed_telephones_users],
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = CurrentYear
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			VAR PrevFixedTelephoneUsers =
+			    CALCULATE(
+			        [code_fixed_telephones_users],
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = CurrentYear - 1
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevFixedTelephoneUsers),
+			    DIVIDE(CurrentFixedTelephoneUsers - PrevFixedTelephoneUsers, PrevFixedTelephoneUsers),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 260978ba-f708-4635-b389-ab05d480ad63
+
+	measure code_mobile_cellular_users_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(population_code[Year])
+			VAR CurrentMobileCellularUsers = 
+			    CALCULATE(
+			        [code_mobile_cellular_users],
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = CurrentYear
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			VAR PrevMobileCellularUsers =
+			    CALCULATE(
+			        [code_mobile_cellular_users],
+			        FILTER(
+			            ALL(population_code),
+			            population_code[Year] = CurrentYear - 1
+			            && population_code[Entity] = MAX(population_code[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevMobileCellularUsers),
+			    DIVIDE(CurrentMobileCellularUsers - PrevMobileCellularUsers, PrevMobileCellularUsers),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 4b2d5c21-01ee-4c04-aa10-346aa9b0c61c
+
+	column Column
+		formatString: 0
+		lineageTag: 94fca07b-d5f0-47b5-a513-0839f2920511
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition MeasureTable_WithCode = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 17c5a6b353cb4293b3bd127310f50f18
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

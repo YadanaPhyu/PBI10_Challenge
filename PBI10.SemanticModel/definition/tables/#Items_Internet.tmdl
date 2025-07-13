@@ -1,0 +1,26 @@
+table #Items_Internet
+	lineageTag: 93975fd9-245b-4bc8-b591-324a04718a45
+
+	measure '#Items_Internet Value' = SELECTEDVALUE('#Items_Internet'[#Items_Internet])
+		formatString: 0
+		lineageTag: b115e25e-160b-4135-bbc5-58aebf18e578
+
+	column #Items_Internet
+		formatString: 0
+		lineageTag: b28b9107-4033-40c5-ac6c-7d3e39a32746
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition #Items_Internet = calculated
+		mode: import
+		source = GENERATESERIES(1, 15, 1)
+
+	annotation PBI_Id = f433855884e8413e92280282b231529c
+

@@ -1,0 +1,54 @@
+table mobile-cellular-subscriptions_code
+	lineageTag: ebe00675-ccb0-47d4-abf8-3b9badfb1221
+
+	column Entity
+		dataType: string
+		lineageTag: 300f1bf8-5b14-4131-95a7-32ad5dfc7e74
+		summarizeBy: none
+		sourceColumn: Entity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		lineageTag: 40715399-f1e3-453b-a6bc-61965ed24f06
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: ff16db7a-0093-431f-96fa-de4cbe5cf075
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mobile cellular subscriptions (per 100 people)'
+		dataType: double
+		lineageTag: 80a72947-cb66-4e46-8dd9-6b4f1047dce5
+		summarizeBy: sum
+		sourceColumn: Mobile cellular subscriptions (per 100 people)
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mobile-cellular-subscriptions_code = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Nimbyx\OneDrive - Nimbyx Ltd\PBI10\mobile-cellular-subscriptions-per-100-people.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Mobile cellular subscriptions (per 100 people)", type number}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Code] <> "")),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Year] >= 2010 and [Year] < 2022)
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

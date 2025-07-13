@@ -1,0 +1,14 @@
+relationship AutoDetected_7aaf8d50-0eb1-417b-91d2-a8f02a317b7e
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: population_no_code_region.internet_users
+	toColumn: number-of-internet-users_no_code.'Number of Internet users'
+
+relationship 79251594-a5b9-c9ee-d6db-07d5ef7f4bfc
+	fromColumn: population_code.Code
+	toColumn: country-code-mapping.alpha-3
+
+relationship bdc1f437-19ca-81ba-755d-fa5f978e2d81
+	fromColumn: world_data_unpivot.Code
+	toColumn: country-code-mapping.alpha-3
+
