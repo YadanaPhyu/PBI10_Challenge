@@ -32,7 +32,7 @@ table mobile-cellular-subscriptions_no_code
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(File.Contents("C:\yskwak\Private\PBI10_Challenge\DataFiles\mobile-cellular-subscriptions-per-100-people.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    Source = Csv.Document(File.Contents(DataFolderPath & "\mobile-cellular-subscriptions-per-100-people.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Mobile cellular subscriptions (per 100 people)", type number}}),
 				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Code] = "")),
