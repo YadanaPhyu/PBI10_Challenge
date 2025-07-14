@@ -1,0 +1,8 @@
+/// change the local directory of yours
+expression DataFolderPath = "C:\yskwak\Private\PBI10_Challenge\DataFiles" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: e443ee7d-6326-48c7-a566-926d30c0cd00
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

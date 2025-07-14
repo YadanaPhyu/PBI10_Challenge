@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["country-code-mapping","fixed-telephone-subscriptions_no_code","mobile-cellular-subscriptions_no_code","number-of-internet-users_no_code","population_code","population_no_code","fixed-telephone-subscriptions_code","mobile-cellular-subscriptions_code","number-of-internet-users_code","world_data","population_no_code_region","world_data_unpivot","per-capita-energy-use"]
+annotation PBI_QueryOrder = ["country-code-mapping","fixed-telephone-subscriptions_no_code","mobile-cellular-subscriptions_no_code","number-of-internet-users_no_code","population_code","population_no_code","fixed-telephone-subscriptions_code","mobile-cellular-subscriptions_code","number-of-internet-users_code","world_data","population_no_code_region","world_data_unpivot","per-capita-energy-use","DataFolderPath"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 

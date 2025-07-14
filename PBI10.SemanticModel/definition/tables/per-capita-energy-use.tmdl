@@ -56,7 +56,7 @@ table per-capita-energy-use
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(File.Contents("C:\Users\Nimbyx\OneDrive - Nimbyx Ltd\PBI10\PBI10_Challenge\DataFiles\per-capita-energy-use.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    Source = Csv.Document(File.Contents("C:\yskwak\Private\PBI10_Challenge\DataFiles\per-capita-energy-use.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Primary energy consumption per capita (kWh/person)", type number}}),
 				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Primary energy consumption per capita (kWh/person)", "EnergyConsumption per capita"}}),

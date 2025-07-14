@@ -69,7 +69,7 @@ table population_code
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(File.Contents("C:\Users\Nimbyx\OneDrive - Nimbyx Ltd\PBI10\PBI10_Challenge\DataFiles\population.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    Source = Csv.Document(File.Contents("C:\yskwak\Private\PBI10_Challenge\DataFiles\population.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Population (historical)", Int64.Type}}),
 				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Code] <> "")),
