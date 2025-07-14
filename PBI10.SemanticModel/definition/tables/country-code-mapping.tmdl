@@ -97,7 +97,7 @@ table country-code-mapping
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(File.Contents(DataFolderPath & "\country-code-mapping.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    Source = Csv.Document(File.Contents("C:\yskwak\Private\PBI10_Challenge\DataFiles\country-code-mapping.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"name", type text}, {"alpha-2", type text}, {"alpha-3", type text}, {"country-code", Int64.Type}, {"iso_3166-2", type text}, {"region", type text}, {"sub-region", type text}, {"intermediate-region", type text}, {"region-code", Int64.Type}, {"sub-region-code", Int64.Type}, {"intermediate-region-code", Int64.Type}})
 				in

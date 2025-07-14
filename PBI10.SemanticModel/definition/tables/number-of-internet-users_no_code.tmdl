@@ -32,7 +32,7 @@ table number-of-internet-users_no_code
 		mode: import
 		source =
 				let
-				    Source = Csv.Document(File.Contents(DataFolderPath & "\number-of-internet-users.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    Source = Csv.Document(File.Contents("C:\yskwak\Private\PBI10_Challenge\DataFiles\number-of-internet-users.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
 				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Number of Internet users", type number}}),
 				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Code] = "")),
