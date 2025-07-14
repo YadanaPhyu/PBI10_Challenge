@@ -1,2 +1,25 @@
+# Power BI Project (.pbip) - Recommended Git Ignore
+
+# Local or user-specific config
 **/.pbi/localSettings.json
+
+# ABF binary cache files (auto-generated)
 **/.pbi/cache.abf
+
+# Auto-generated visual layout metadata (can get locked)
+**/definition/pages/*/visuals/
+
+# Optional: Temp or system-specific files
+*.pbipTemp
+*.tmp
+*.bak
+~$*
+
+# Ignore Windows and Office auto-saves
+Thumbs.db
+.DS_Store
+desktop.ini
+*.lnk
+
+# Ignore VS Code settings (if using)
+.vscode/
