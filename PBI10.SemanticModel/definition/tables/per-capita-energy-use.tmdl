@@ -1,0 +1,73 @@
+table per-capita-energy-use
+	lineageTag: 73542b0c-3409-45e9-a25d-26a1bd06d0a5
+
+	column Entity
+		dataType: string
+		lineageTag: cad2678f-b0b9-4ff2-81c1-129199231d78
+		summarizeBy: none
+		sourceColumn: Entity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		lineageTag: 9cf503aa-3a38-44c3-8ad4-28bbc2ca375d
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: b9c34e9c-c206-45b9-8f0e-4053205f5747
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 4afa6d28-872b-4cff-bbda-213eba39aa00
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: 2500d4ac-f598-4c66-8017-611b081484a7
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EntityType
+		dataType: string
+		lineageTag: 58016333-f90a-4ffa-b43a-300def3e479d
+		summarizeBy: none
+		sourceColumn: EntityType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition per-capita-energy-use = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Nimbyx\OneDrive - Nimbyx Ltd\PBI10\PBI10_Challenge\DataFiles\per-capita-energy-use.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Entity", type text}, {"Code", type text}, {"Year", Int64.Type}, {"Primary energy consumption per capita (kWh/person)", type number}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Primary energy consumption per capita (kWh/person)", "EnergyConsumption per capita"}}),
+				    #"Unpivoted Other Columns" = Table.UnpivotOtherColumns(#"Renamed Columns", {"Entity", "Code", "Year"}, "Attribute", "Value"),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Unpivoted Other Columns",{{"Attribute", "Category"}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Renamed Columns1", each [Year] >= 2010 and [Year] < 2022),
+				    #"Added Conditional Column" = Table.AddColumn(#"Filtered Rows", "EntityType", each if Text.Contains([Entity], "income") then "Income" else if [Entity] = "world" then "world" else if [Entity] = "Asia" then "Region" else if [Entity] = "Africa" then "Region" else if [Entity] = "Oceania" then "Region" else if [Entity] = "North America" then "Region" else if [Entity] = "South America" then "Region" else if [Entity] = "Europe" then "Region" else "Country")
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

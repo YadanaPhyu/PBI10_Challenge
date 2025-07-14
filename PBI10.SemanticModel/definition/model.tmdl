@@ -6,11 +6,11 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["country-code-mapping","fixed-telephone-subscriptions_no_code","mobile-cellular-subscriptions_no_code","number-of-internet-users_no_code","population_code","population_no_code","fixed-telephone-subscriptions_code","mobile-cellular-subscriptions_code","number-of-internet-users_code","world_data","population_no_code_region","world_data_unpivot"]
+annotation PBI_QueryOrder = ["country-code-mapping","fixed-telephone-subscriptions_no_code","mobile-cellular-subscriptions_no_code","number-of-internet-users_no_code","population_code","population_no_code","fixed-telephone-subscriptions_code","mobile-cellular-subscriptions_code","number-of-internet-users_code","world_data","population_no_code_region","world_data_unpivot","per-capita-energy-use"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBIDesktopVersion = 2.142.1277.0 (25.04)+014fde450f93691fc9537f0758d73d1c5df153ef
+annotation PBIDesktopVersion = 2.144.1378.0 (25.06)+cba1e61f16ea36d44901f06fa446299040122394
 
 annotation PBI_ProTooling = ["DevMode"]
 
@@ -33,6 +33,7 @@ ref table #Pages
 ref table '# Items'
 ref table #Pages_Internet
 ref table #Items_Internet
+ref table per-capita-energy-use
 
 ref cultureInfo en-US
 

@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.7.0/schema.json",
-  "name": "eec4c20ce07b1d4b880b",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "38467ef1584fa0bc04b1",
   "position": {
-    "x": 444.68831994328906,
-    "y": 701.12526096738975,
-    "z": 20000,
-    "height": 227.27740250336805,
-    "width": 352.44466765015045,
-    "tabOrder": 18000
+    "x": 32.93310506219494,
+    "y": 939.96570698348069,
+    "z": 28003,
+    "height": 233.27616085721417,
+    "width": 1210.2916110356641,
+    "tabOrder": 27003
   },
   "visual": {
     "visualType": "areaChart",
@@ -42,11 +42,39 @@
                       "Entity": "world_data_measure_table"
                     }
                   },
-                  "Property": "internet_penetration"
+                  "Property": "mobile_growth_pct"
                 }
               },
-              "queryRef": "world_data_measure_table.internet_penetration",
-              "nativeQueryRef": "internet_penetration"
+              "queryRef": "world_data_measure_table.mobile_growth_pct",
+              "nativeQueryRef": "mobile_growth_pct"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "world_data_measure_table"
+                    }
+                  },
+                  "Property": "internet_growth_pct"
+                }
+              },
+              "queryRef": "world_data_measure_table.internet_growth_pct",
+              "nativeQueryRef": "internet_growth_pct"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "world_data_measure_table"
+                    }
+                  },
+                  "Property": "population_growth_pct"
+                }
+              },
+              "queryRef": "world_data_measure_table.population_growth_pct",
+              "nativeQueryRef": "population_growth_pct"
             }
           ]
         }
@@ -143,24 +171,16 @@
           }
         }
       ],
-      "dataPoint": [
+      "lineStyles": [
         {
           "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 1,
-                      "Percent": 0
-                    }
-                  }
+            "lineChartType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'smooth'"
                 }
               }
             }
-          },
-          "selector": {
-            "metadata": "world_data_measure_table.internet_penetration"
           }
         }
       ]
@@ -179,7 +199,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'The global internet penetration rate rose from 28.0% to 63.1%, showing major strides in digital access worldwide.'"
+                  "Value": "''"
                 }
               }
             },
@@ -313,6 +333,62 @@
           ]
         },
         "howCreated": "User"
+      },
+      {
+        "name": "51bdcd6b1559a9900d87",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "world_data_unpivot"
+              }
+            },
+            "Property": "Year"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9dd5129550ceaafd751c",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "world_data_measure_table"
+              }
+            },
+            "Property": "mobile_growth_pct"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "caf4e2f36c31d2fe5c35",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "world_data_measure_table"
+              }
+            },
+            "Property": "internet_growth_pct"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "c2685a87cc4696378e70",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "world_data_measure_table"
+              }
+            },
+            "Property": "population_growth_pct"
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

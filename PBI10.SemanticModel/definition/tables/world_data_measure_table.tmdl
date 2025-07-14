@@ -42,8 +42,6 @@ table world_data_measure_table
 		formatString: #,0
 		lineageTag: 05f04538-ecc0-473f-817e-da9a013686cc
 
-		annotation PBI_FormatHint = {"isDecimal":true}
-
 	measure mobile_cellular = ```
 			
 			CALCULATE(
@@ -415,6 +413,130 @@ table world_data_measure_table
 			FORMAT([Total Population CY Internet], "0.00%")
 			```
 		lineageTag: 8746ff63-37f8-40d1-a3e8-79d4d36b323b
+
+	measure fixed_telephones_users_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(world_data_unpivot[Year])
+			VAR CurrentFixedTelephoneUsers = 
+			    CALCULATE(
+			        [fixed_telephone],
+			        FILTER(
+			            ALL(world_data_unpivot),
+			            world_data_unpivot[Year] = CurrentYear
+			            && world_data_unpivot[Entity] = MAX(world_data_unpivot[Entity])
+			        )
+			    )
+			VAR PrevFixedTelephoneUsers =
+			    CALCULATE(
+			        [fixed_telephone],
+			        FILTER(
+			            ALL(world_data_unpivot),
+			            world_data_unpivot[Year] = CurrentYear - 1
+			            && world_data_unpivot[Entity] = MAX(world_data_unpivot[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevFixedTelephoneUsers),
+			    DIVIDE(CurrentFixedTelephoneUsers - PrevFixedTelephoneUsers, PrevFixedTelephoneUsers),
+			    BLANK()
+			)
+			```
+		formatString: 0%;-0%;0%
+		lineageTag: 7b27d843-dd41-4c5b-8821-74b1b595e866
+
+	measure population_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(world_data_unpivot[Year])
+			VAR CurrentFixedTelephoneUsers = 
+			    CALCULATE(
+			        [population],
+			        FILTER(
+			            ALL(world_data_unpivot),
+			            world_data_unpivot[Year] = CurrentYear
+			            && world_data_unpivot[Entity] = MAX(world_data_unpivot[Entity])
+			        )
+			    )
+			VAR PrevFixedTelephoneUsers =
+			    CALCULATE(
+			        [population],
+			        FILTER(
+			            ALL(world_data_unpivot),
+			            world_data_unpivot[Year] = CurrentYear - 1
+			            && world_data_unpivot[Entity] = MAX(world_data_unpivot[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevFixedTelephoneUsers),
+			    DIVIDE(CurrentFixedTelephoneUsers - PrevFixedTelephoneUsers, PrevFixedTelephoneUsers),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 608d32cb-667a-4354-9e84-3768e6f7e14e
+
+	measure internet_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(world_data_unpivot[Year])
+			VAR CurrentFixedTelephoneUsers = 
+			    CALCULATE(
+			        [internet],
+			        FILTER(
+			            ALL(world_data_unpivot),
+			            world_data_unpivot[Year] = CurrentYear
+			            && world_data_unpivot[Entity] = MAX(world_data_unpivot[Entity])
+			        )
+			    )
+			VAR PrevFixedTelephoneUsers =
+			    CALCULATE(
+			        [internet],
+			        FILTER(
+			            ALL(world_data_unpivot),
+			            world_data_unpivot[Year] = CurrentYear - 1
+			            && world_data_unpivot[Entity] = MAX(world_data_unpivot[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevFixedTelephoneUsers),
+			    DIVIDE(CurrentFixedTelephoneUsers - PrevFixedTelephoneUsers, PrevFixedTelephoneUsers),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: dd03879e-22b5-4456-a360-d5d2b778b620
+
+	measure mobile_growth_pct = ```
+			
+			VAR CurrentYear = SELECTEDVALUE(world_data_unpivot[Year])
+			VAR CurrentFixedTelephoneUsers = 
+			    CALCULATE(
+			        [mobile_cellular],
+			        FILTER(
+			            ALL(world_data_unpivot),
+			            world_data_unpivot[Year] = CurrentYear
+			            && world_data_unpivot[Entity] = MAX(world_data_unpivot[Entity])
+			        )
+			    )
+			VAR PrevFixedTelephoneUsers =
+			    CALCULATE(
+			        [mobile_cellular],
+			        FILTER(
+			            ALL(world_data_unpivot),
+			            world_data_unpivot[Year] = CurrentYear - 1
+			            && world_data_unpivot[Entity] = MAX(world_data_unpivot[Entity])
+			        )
+			    )
+			RETURN
+			IF(
+			    NOT ISBLANK(PrevFixedTelephoneUsers),
+			    DIVIDE(CurrentFixedTelephoneUsers - PrevFixedTelephoneUsers, PrevFixedTelephoneUsers),
+			    BLANK()
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: bf7f2dcb-fb8b-4698-aff8-f07c7ab9ce6a
 
 	column Column
 		formatString: 0

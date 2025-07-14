@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.7.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
   "name": "598f08f324d021a0772e",
   "position": {
     "x": 396.05206324432436,
@@ -332,6 +332,20 @@
           ]
         },
         "howCreated": "User"
+      },
+      {
+        "name": "2de472ce7b5f6fe58d2e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "world_data_measure_table"
+              }
+            },
+            "Property": "internet"
+          }
+        },
+        "type": "Advanced"
       }
     ],
     "filterSortOrder": "Custom"
