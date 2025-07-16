@@ -4,7 +4,7 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 810,
+        "x": 731.42857142857144,
         "y": 0
       },
       "nodes": [
@@ -19,7 +19,7 @@
             "height": 387.5,
             "width": 234
           },
-          "zIndex": 1
+          "zIndex": 20
         },
         {
           "location": {
@@ -32,7 +32,7 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 2
+          "zIndex": 9
         },
         {
           "location": {
@@ -45,7 +45,7 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 3
+          "zIndex": 10
         },
         {
           "location": {
@@ -58,7 +58,7 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 4
+          "zIndex": 11
         },
         {
           "location": {
@@ -71,7 +71,7 @@
             "height": 341,
             "width": 234
           },
-          "zIndex": 10
+          "zIndex": 17
         },
         {
           "location": {
@@ -84,7 +84,7 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 5
+          "zIndex": 12
         },
         {
           "location": {
@@ -97,7 +97,7 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 6
+          "zIndex": 13
         },
         {
           "location": {
@@ -110,7 +110,7 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 9
+          "zIndex": 16
         },
         {
           "location": {
@@ -123,7 +123,7 @@
             "height": 339,
             "width": 234
           },
-          "zIndex": 11
+          "zIndex": 18
         },
         {
           "location": {
@@ -136,7 +136,7 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 7
+          "zIndex": 14
         },
         {
           "location": {
@@ -149,7 +149,7 @@
             "height": 180,
             "width": 234
           },
-          "zIndex": 8
+          "zIndex": 15
         },
         {
           "location": {
@@ -162,7 +162,7 @@
             "height": 248,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 1
         },
         {
           "location": {
@@ -175,7 +175,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 2
         },
         {
           "location": {
@@ -188,7 +188,7 @@
             "height": 338.57142857142856,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 3
         },
         {
           "location": {
@@ -200,57 +200,72 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 4
         },
         {
-          "location": {},
+          "location": {
+            "x": 2172.4426615578786,
+            "y": 294.75
+          },
           "nodeIndex": "# Items",
           "nodeLineageTag": "bc9c0f7d-60ab-4fe9-bb3a-efe5e63521dd",
           "size": {
             "height": 224,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 5
         },
         {
-          "location": {},
+          "location": {
+            "x": 2456.4426615578786,
+            "y": 294.75
+          },
           "nodeIndex": "#Items_Internet",
           "nodeLineageTag": "93975fd9-245b-4bc8-b591-324a04718a45",
           "size": {
             "height": 224,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 6
         },
         {
-          "location": {},
+          "location": {
+            "x": 2740.4426615578786,
+            "y": 294.75
+          },
           "nodeIndex": "#Pages",
           "nodeLineageTag": "87f991ae-8f32-471a-918a-ac8b0274cc74",
           "size": {
             "height": 224,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 7
         },
         {
-          "location": {},
+          "location": {
+            "x": 3024.4426615578786,
+            "y": 294.75
+          },
           "nodeIndex": "#Pages_Internet",
           "nodeLineageTag": "ca719484-9376-4c1f-a53f-49d0fd299f3f",
           "size": {
             "height": 224,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 8
         },
         {
-          "location": {},
+          "location": {
+            "x": 886.01409012930719,
+            "y": 513.32142857142867
+          },
           "nodeIndex": "per-capita-energy-use",
           "nodeLineageTag": "73542b0c-3409-45e9-a25d-26a1bd06d0a5",
           "size": {
             "height": 224,
-            "width": 234
+            "width": 244.28571428571445
           },
-          "zIndex": 0
+          "zIndex": 19
         }
       ],
       "name": "All tables",

@@ -21,7 +21,7 @@ table per-capita-energy-use
 		dataType: int64
 		formatString: 0
 		lineageTag: b9c34e9c-c206-45b9-8f0e-4053205f5747
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: Year
 
 		annotation SummarizationSetBy = Automatic

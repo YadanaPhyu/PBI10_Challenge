@@ -12,3 +12,14 @@ relationship bdc1f437-19ca-81ba-755d-fa5f978e2d81
 	fromColumn: world_data_unpivot.Code
 	toColumn: country-code-mapping.alpha-3
 
+relationship 79b8f58d-4ca5-820f-e96f-22fb0eb93d72
+	crossFilteringBehavior: bothDirections
+	securityFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: number-of-internet-users_no_code.Year
+	toColumn: per-capita-energy-use.Year
+
+relationship 2936949e-f2f2-71d6-2cc4-be56ce4aa937
+	fromColumn: per-capita-energy-use.Code
+	toColumn: country-code-mapping.alpha-3
+

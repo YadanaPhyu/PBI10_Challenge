@@ -13,7 +13,7 @@ table number-of-internet-users_no_code
 		dataType: int64
 		formatString: 0
 		lineageTag: b8b86c71-812b-4b83-960e-39cc592157c7
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: Year
 
 		annotation SummarizationSetBy = Automatic
